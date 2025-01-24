@@ -38,26 +38,26 @@ terraform apply -var-file=dev.tfvars -var-file=secrets.tfvars
 terraform destroy -var-file=dev.tfvars -var-file=secrets.tfvars
 
 The directory structure:
-terraform/
-├── main.tf           # Main configuration
-├── variables.tf      # Root variables
-├── providers.tf      # Provider and backend configuration
-├── outputs.tf
-├── dev.tfvars 
-├── modules/
-    ├── vpc/
-    │   ├── main.tf        # VPC resources
-    |   ├── outputs.tf 
-    │   └── variables.tf
-    ├── eks/
-    │   ├── main.tf        # EKS resources
-    |   ├── outputs.tf
-    │   └── variables.tf
-    ├── storage/
-    │   ├── main.tf
-    |   ├── outputs.tf
-    │   └── variables.tf
-    └── secrets/
-        ├── main.tf        
-        ├── outputs.tf
-        └── variables.tf
+# terraform/
+# ├── main.tf           # Main configuration
+# ├── variables.tf      # Root variables
+# ├── providers.tf      # Provider and backend configuration
+# ├── outputs.tf
+# ├── dev.tfvars 
+# ├── modules/
+#     ├── vpc/
+#     │   ├── main.tf        # VPC resources
+#     |   ├── outputs.tf 
+#     │   └── variables.tf
+#     ├── eks/
+#     │   ├── main.tf        # EKS resources
+#     |   ├── outputs.tf
+#     │   └── variables.tf
+#     ├── storage/
+#     │   ├── main.tf
+#     |   ├── outputs.tf
+#     │   └── variables.tf
+#     └── secrets/
+#         ├── main.tf        
+#         ├── outputs.tf
+#         └── variables.tf
