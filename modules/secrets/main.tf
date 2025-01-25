@@ -40,13 +40,22 @@ resource "kubernetes_namespace" "recipe-app" {
   }
 }
 
+resource "kubernetes_namespace" "logging" {
+  metadata {
+    name = "logging"
+  }
+  lifecycle {
+    ignore_changes = [metadata]
+  }
+}
+
 data "aws_secretsmanager_secret" "mongodb_secret" {
   name = "nava-recipe-app-secrets"
 }
 
 data "aws_secretsmanager_secret_version" "mongodb_secret" {
   secret_id = data.aws_secretsmanager_secret.mongodb_secret.id
-  depends_on = [aws_secretsmanager_secret_version.mongodb_secret_version]
+  # depends_on = [aws_secretsmanager_secret_version.mongodb_secret_version]
 }
 
 resource "kubernetes_secret" "git_credentials" {
@@ -88,4 +97,25 @@ resource "kubernetes_secret" "mongodb_secret" {
   }
   type = "Opaque"
   depends_on = [kubernetes_namespace.recipe-app]
+}
+
+data "aws_secretsmanager_secret" "elasticsearch-secret" {
+  name = "nava-elasticsearch-secret"  
+}
+
+data "aws_secretsmanager_secret_version" "elasticsearch-secret" {
+  secret_id = data.aws_secretsmanager_secret.elasticsearch-secret.id
+}
+
+resource "kubernetes_secret" "elasticsearch_secret" {
+  metadata {
+    name      = "elasticsearch-secret"
+    namespace = "logging"
+  }
+
+  data = {
+    "elasticsearch-password" = jsondecode(data.aws_secretsmanager_secret_version.elasticsearch-secret.secret_string)["password"]
+  }
+
+  type = "Opaque"
 }
