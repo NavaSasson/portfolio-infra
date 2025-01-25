@@ -83,12 +83,6 @@ variable "mongodb_replica_set_key" {
   sensitive   = true
 }
 
-# variable "recipe_api_key" {
-#   description = "Recipe API key"
-#   type        = string
-#   sensitive   = true
-# }
-
 variable "server_secretkey" {
   description = "ArgoCD server secret key"
   type        = string
@@ -104,20 +98,3 @@ variable "argocd_admin_password" {
 variable "sync_options" {
   type    = list(string)
 }
-
-# variable "aws_access_key_id" {
-#   description = "AWS access key ID"
-#   type        = string
-#   sensitive   = true
-# }
-
-# variable "aws_secret_access_key" {
-#   description = "AWS secret access key"
-#   type        = string
-#   sensitive   = true
-# }
-
-# variable "aws_default_region" {
-#   description = "AWS default region"
-#   type        = string
-# }

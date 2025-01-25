@@ -13,11 +13,6 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-# variable "security_group_ids" {
-#   description = "List of security group IDs"
-#   type        = list(string)
-# }
-
 variable "instance_types" {
   description = "Nodes EC2 types"
   type        = list(string)

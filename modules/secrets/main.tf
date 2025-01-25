@@ -7,9 +7,20 @@
 #   }
 # }
 
-data "aws_secretsmanager_secret" "mongodb_secret" {
-  name = "nava-recipe-app-secrets"
-}
+# resource "aws_secretsmanager_secret_version" "mongodb_secret_version" {
+#   secret_id     = data.aws_secretsmanager_secret.mongodb_secret.id
+#   secret_string = jsonencode({
+#     "username"                = var.mongodb_username,
+#     "password"                = var.mongodb_password,
+#     "root_password"           = var.mongodb_root_password,
+#     "replica_set_key"         = var.mongodb_replica_set_key,
+#     "argocd_server_secretkey" = var.server_secretkey,
+#     "argocd_admin_password"   = var.argocd_admin_password,
+#     "argocd_admin_passwordMtime" = timestamp(),
+#     "git_username"            = var.git_username,
+#     "git_token"               = var.git_token
+#   })
+# }
 
 resource "kubernetes_namespace" "argocd" {
   metadata {
@@ -29,24 +40,13 @@ resource "kubernetes_namespace" "recipe-app" {
   }
 }
 
+data "aws_secretsmanager_secret" "mongodb_secret" {
+  name = "nava-recipe-app-secrets"
+}
+
 data "aws_secretsmanager_secret_version" "mongodb_secret" {
   secret_id = data.aws_secretsmanager_secret.mongodb_secret.id
   depends_on = [aws_secretsmanager_secret_version.mongodb_secret_version]
-}
-
-resource "aws_secretsmanager_secret_version" "mongodb_secret_version" {
-  secret_id     = data.aws_secretsmanager_secret.mongodb_secret.id
-  secret_string = jsonencode({
-    "username"                = var.mongodb_username,
-    "password"                = var.mongodb_password,
-    "root_password"           = var.mongodb_root_password,
-    "replica_set_key"         = var.mongodb_replica_set_key,
-    "argocd_server_secretkey" = var.server_secretkey,
-    "argocd_admin_password"   = var.argocd_admin_password,
-    "argocd_admin_passwordMtime" = timestamp(),
-    "git_username"            = var.git_username,
-    "git_token"               = var.git_token
-  })
 }
 
 resource "kubernetes_secret" "git_credentials" {

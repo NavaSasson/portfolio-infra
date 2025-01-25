@@ -28,35 +28,6 @@ resource "aws_iam_role_policy_attachment" "ebs_csi_policy" {
   role       = aws_iam_role.ebs_csi_role.name
 }
 
-
-# Create the EBS CSI driver add-on
-# resource "aws_eks_addon" "ebs_csi" {
-#   cluster_name             = var.cluster_name
-#   addon_name              = "aws-ebs-csi-driver"
-#   addon_version           = "v1.31.0-eksbuild.1"  # Use appropriate version
-#   service_account_role_arn = aws_iam_role.ebs_csi_role.arn
-
-#   tags = {
-#     "eks_addon" = "ebs-csi"
-#   }
-# }
-
-# resource "aws_eks_addon" "ebs_csi" {
-#   cluster_name             = var.cluster_name
-#   addon_name              = "aws-ebs-csi-driver"
-#   addon_version           = "v1.31.0-eksbuild.1"
-#   service_account_role_arn = aws_iam_role.ebs_csi_role.arn
-  
-#   # Add these parameters to handle existing resources
-#   resolve_conflicts_on_create = "OVERWRITE"
-#   resolve_conflicts_on_update = "PRESERVE"
-#   preserve                   = true
-
-#   tags = {
-#     "eks_addon" = "ebs-csi"
-#   }
-# }
-
 resource "aws_eks_addon" "ebs_csi" {
   cluster_name                = var.cluster_name
   addon_name                  = "aws-ebs-csi-driver"

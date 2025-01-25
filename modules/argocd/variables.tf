@@ -36,11 +36,6 @@ variable "namespace" {
   type = string
 }
 
-# variable "app_namespace" {
-#   description = "namespace for recipe app"
-#   type = string
-# }
-
 variable "sync_options" {
   type    = list(string)
 }

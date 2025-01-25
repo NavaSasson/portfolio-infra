@@ -1,28 +1,3 @@
-# # Add OIDC provider for EKS
-# data "tls_certificate" "eks" {
-#   url = module.eks.cluster_endpoint
-# }
-
-# resource "aws_iam_openid_connect_provider" "eks" {
-#   client_id_list  = ["sts.amazonaws.com"]
-#   thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-#   url             = module.eks.cluster_endpoint
-# }
-# Get the EKS cluster OIDC issuer URL without the protocol
-# data "aws_eks_cluster" "eks" {
-#   name = module.eks.cluster_name
-#   depends_on = [module.eks]
-# }
-
-# Create OIDC provider
-# resource "aws_iam_openid_connect_provider" "eks" {
-#   client_id_list = ["sts.amazonaws.com"]
-#   thumbprint_list = ["9e99a48a9960b14926bb7f3b02e22da2b0ab7280"] # This is AWS's thumbprint
-#   url = data.aws_eks_cluster.eks.identity[0].oidc[0].issuer
-# }
-
-# data "aws_caller_identity" "current" {}
-
 module "secrets" {
   source = "./modules/secrets"
   
@@ -53,7 +28,6 @@ module "eks" {
   cluster_name         = var.cluster_name
   vpc_id              = module.vpc.vpc_id
   subnet_ids          = module.vpc.public_subnet_ids
-  # security_group_ids  = [module.security.k8s_security_group_id]
   instance_types      = var.instance_types
   scaling_config      = var.scaling_config
 
@@ -73,7 +47,6 @@ module "storage" {
 module "argocd" {
   source = "./modules/argocd"
   
-  # eks_cluster_id = module.eks.cluster_name
   gitops_repo_url = var.gitops_repo_url
   aws_region      = var.aws_region
   cluster_name    = var.cluster_name
@@ -81,7 +54,6 @@ module "argocd" {
   git_token    = var.git_token
   sync_options = var.sync_options
   namespace = module.secrets.argocd_namespace
-  # app_namespace = module.secrets.recipe_app_namespace
 
   depends_on = [ module.secrets ]
 }

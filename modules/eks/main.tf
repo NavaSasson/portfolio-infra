@@ -67,11 +67,6 @@ resource "aws_iam_role_policy_attachment" "vpc_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
 }
 
-# resource "aws_iam_role_policy_attachment" "ebs_csi_driver_policy" {
-#   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-#   role       = aws_iam_role.eks_worker_role.name
-# }
-
 resource "aws_launch_template" "eks_nodes" {
   name = "${var.cluster_name}-template"
   tag_specifications {

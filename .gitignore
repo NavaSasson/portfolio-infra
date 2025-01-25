@@ -1,0 +1,3 @@
+secrets.tfvars
+.terraform.lock.hcl
+.terraform/
