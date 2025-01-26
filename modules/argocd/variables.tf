@@ -1,8 +1,3 @@
-# variable "eks_cluster_id" {
-#   description = "ID of the EKS cluster"
-#   type        = string
-# }
-
 variable "gitops_repo_url" {
   description = "url for argocd infra"
   type        = string
@@ -17,18 +12,6 @@ variable "cluster_name" {
 variable "aws_region" {
   description = "AWS region"
   type        = string
-}
-
-variable "git_username" {
-  description = "GitHub username for repository access"
-  type        = string
-  sensitive   = true
-}
-
-variable "git_token" {
-  description = "GitHub personal access token for repository access"
-  type        = string
-  sensitive   = true
 }
 
 variable "namespace" {

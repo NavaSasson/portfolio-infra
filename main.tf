@@ -1,15 +1,5 @@
 module "secrets" {
   source = "./modules/secrets"
-  
-  environment         = var.environment
-  mongodb_username    = var.mongodb_username
-  mongodb_password    = var.mongodb_password
-  mongodb_root_password = var.mongodb_root_password
-  mongodb_replica_set_key = var.mongodb_replica_set_key
-  git_username       = var.git_username
-  git_token          = var.git_token
-  server_secretkey   = var.server_secretkey
-  argocd_admin_password = var.argocd_admin_password
 
   depends_on = [ module.eks ]
 }
@@ -50,8 +40,6 @@ module "argocd" {
   gitops_repo_url = var.gitops_repo_url
   aws_region      = var.aws_region
   cluster_name    = var.cluster_name
-  git_username = var.git_username
-  git_token    = var.git_token
   sync_options = var.sync_options
   namespace = module.secrets.argocd_namespace
 
