@@ -1,14 +1,16 @@
 # This file configures the EKS cluster and its resources.
 
+# To collect information about the current AWS account
 data "aws_caller_identity" "current" {}
 
 
-# Get the thumbprint for the EKS OIDC provider
+# Get the thumbprint of the SSL certificate for the EKS OIDC provider
 data "tls_certificate" "eks" {
   url = aws_eks_cluster.nava_cluster.identity[0].oidc[0].issuer
 }
 
 # Create the OIDC provider
+# Enables authentication between EKS and IAM roles to manage access and security
 resource "aws_iam_openid_connect_provider" "eks" {
   client_id_list = ["sts.amazonaws.com"]
   thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
@@ -30,7 +32,6 @@ resource "aws_eks_cluster" "nava_cluster" {
   vpc_config {
     subnet_ids = var.subnet_ids
     security_group_ids = [ aws_security_group.k8s_sg.id ]
-    # security_group_ids = var.security_group_ids
   }
 
   tags = {
@@ -67,6 +68,7 @@ resource "aws_iam_role_policy_attachment" "vpc_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
 }
 
+# Launch template for the worker nodes of the EKS
 resource "aws_launch_template" "eks_nodes" {
   name = "${var.cluster_name}-template"
   tag_specifications {
@@ -80,7 +82,8 @@ resource "aws_launch_template" "eks_nodes" {
   }
 }
 
-# Configures the worker nodes for the EKS cluster:
+# Configures the group of worker nodes for the EKS cluster:
+#   Define the size of the group and the instance types of the machines.
 #   Connects to the cluster and public subnets.
 #   Uses an IAM role for worker nodes.
 resource "aws_eks_node_group" "app_nodes" {

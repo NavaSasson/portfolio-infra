@@ -1,3 +1,4 @@
+# Define required providers for Helm and Kubectl
 terraform {
   required_providers {
     helm = {
@@ -11,6 +12,7 @@ terraform {
   }
 }
 
+# Add ArgoCD Helm release resource
 resource "helm_release" "argocd" {
   name       = "argocd"
   namespace  = var.namespace
@@ -46,6 +48,7 @@ resource "helm_release" "argocd" {
   ]
 }
 
+# Create Kubernetes manifest for ArgoCD root application
 resource "kubectl_manifest" "argocd_application_infra_app" {
   yaml_body = templatefile("${path.module}/templates/root_app.yaml.tpl", {
     name = "root-app"

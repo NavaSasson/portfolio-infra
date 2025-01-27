@@ -1,4 +1,8 @@
-# Create IAM role and policy as before
+# Configuring the resources needed to run the Amazon EBS CSI Driver on EKS
+# The CSI Driver is a container storage interface that allows Kubernetes to communicate with external storage systems
+
+# Create IAM role and policy
+# Allows him to direct access through Web Identity (OIDC) in EKS.
 resource "aws_iam_role" "ebs_csi_role" {
   name = "${var.cluster_name}-ebs-csi-role"
   
@@ -22,12 +26,14 @@ resource "aws_iam_role" "ebs_csi_role" {
   })
 }
 
-
+# Attaches the IAM policy (AmazonEBSCSIDriverPolicy) to the ebs_csi_role role.
+# Gives access to CSI so that it can perform operations related to managing EBS volumes in AWS.
 resource "aws_iam_role_policy_attachment" "ebs_csi_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
   role       = aws_iam_role.ebs_csi_role.name
 }
 
+# Installing the EBS CSI Driver on EKS as ADD-ON
 resource "aws_eks_addon" "ebs_csi" {
   cluster_name                = var.cluster_name
   addon_name                  = "aws-ebs-csi-driver"

@@ -4,7 +4,7 @@ aws_region = "ap-south-1"
 # Node configuration: number of nodes
 scaling_config = {
   desired_size   = 3
-  max_size       = 3
+  max_size       = 4
   min_size       = 2
 }
 
